@@ -8,7 +8,7 @@ module unload java
 module load picard
 module load gatk/4
 module load java/13
-module load bcftools
+module load bcftools/1.12
 module load parallel
 module load yq
 module load workspace/scratch

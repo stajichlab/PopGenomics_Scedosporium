@@ -1,7 +1,8 @@
 #!/usr/bin/bash
-#SBATCH -p intel -N 1 -n 8 --mem 16gb  --out logs/IQTREE2.log
+#SBATCH -p intel -N 1 -n 8 --mem 16gb  --out logs/IQTREE2.log --time 48:00:00
 
-module load IQ-TREE/2.1.1
+module load IQ-TREE/2.1.3
+module load yq
 TREEDIR=strain_tree
 source config.txt
 if [ -z $TREEDIR ]; then

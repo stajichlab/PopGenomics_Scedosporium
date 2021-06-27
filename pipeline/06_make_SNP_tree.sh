@@ -52,7 +52,7 @@ iqtreerun() {
 	in=$1
 	out=$in.treefile
 	if [[ ! -f $out || $in -nt $out ]]; then
-		sbatch -p intel -n 6 -N 1 --mem 16gb -J iqtree --wrap "module load IQ-TREE/2.1.1; iqtree2 -m GTR+ASC -s $in -nt AUTO -bb 1000 -alrt 1000"
+		sbatch -p intel -n 6 -N 1 --mem 16gb -J iqtree --wrap "module load IQ-TREE/2.1.3; iqtree2 -m GTR+ASC -s $in -nt AUTO -bb 1000 -alrt 1000"
 	fi
 }
 
@@ -85,11 +85,12 @@ do
       rsync -a $vcf $vcftmp
       rsync -a $vcf.tbi $vcftmp.tbi
       # no ref genome alleles
-      #printf ">%s\n%s\n" $REFNAME $(bcftools view -e 'AF=1' ${vcf} | bcftools query -e 'INFO/AF < 0.1' -f '%REF') > $FAS
+      printf ">%s\n%s\n" $REFNAME $(bcftools view -e 'QUAL < 1000 || AF=1' ${vcf} | bcftools query -e 'INFO/AF < 0.1' -f '%REF') > $FAS
       parallel -j $CPU print_fas ::: $(bcftools query -l ${vcf}) ::: $vcftmp >> $FAS
       perl -ip -e 'if(/^>/){s/[\(\)#]/_/g; s/_+/_/g } else {s/[\*.]/-/g }' $FAS
     fi
   done
 done
 parallel -j 2 fasttreerun ::: $(ls $TREEDIR/*.mfa)
-parallel -j 4 iqtreerun ::: $(ls $TREEDIR/*.mfa)
+
+#parallel -j 4 iqtreerun ::: $(ls $TREEDIR/*.mfa)

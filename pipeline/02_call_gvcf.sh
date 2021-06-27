@@ -4,7 +4,7 @@
 module load picard
 module load java/13
 module load gatk/4
-module load bcftools
+module load bcftools/1.12
 
 MEM=32g
 SAMPFILE=samples.csv
