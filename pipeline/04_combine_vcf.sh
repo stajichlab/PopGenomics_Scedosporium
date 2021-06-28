@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-#SBATCH -p short -C xeon --mem 64gb -N 1 -n 4 --out logs/concat_vcf.log
+#SBATCH -p short --mem 64gb -N 1 -n 4 --out logs/concat_vcf.log
 
 module load bcftools/1.12
 module load yq
